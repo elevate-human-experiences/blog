@@ -1,0 +1,33 @@
+---
+title: "v0.2: A Weekend Adventure"
+date: "2025-03-31"
+tags: [MCP, v0.2, Protocol, Tools, Development]
+---
+
+I spent the weekend implementing **MCP v0.2** from specs (yup, it was as fun as it sounds 😂). Agents can now use authenticated tools, but there's a lot to be desired. 
+
+## My Journey with MCP v0.2
+
+- ✅ **Getting Started:**  
+  I started reading the MCP v0.2 [specs](https://spec.modelcontextprotocol.io/specification/2025-03-26/) over last Friday. It was an easy read and definitely presented itself as a surmountable challenge. But it was harder than I thought. The Python SDK is still v0.2 – plus, the clients don't really support auth yet. If I were developing for a client, I'd wait for these to catch up (a week or two). And so I ended up building for both with a Falcon server. 
+
+- 🔐 **Protocol Changes:**  
+  The protocol for v0.2 is very different from v0.1 – the SSE endpoint is gone. The authorization `.well-known` endpoint coupled with an OAuth flow helps with tool/resource/prompt discovery. Simple JSON requests are easier to implement, but if you were relying on server push, that’s no longer an option. One unfortunate hiccup – the format of the tools, etc. that MCP uses is not the same as what the OpenAI API (the de facto chat-completions API standard) employs.
+
+- ⛓️‍💥 **Database Adventures:**  
+  I chose a personal DB that allows me to add entities like People, Companies, etc., but I think I bit off more than I could chew with schema CRUD operations. That's on me. One major challenge I faced was with function call chains – first fetching the schema for a Person, then updating it. Tool calling still isn't optimal.
+
+- 👩‍💻 **Dev Tooling:**  
+  The dev tooling is still lacking – especially since v0.2 support isn’t fully available yet. It was astounding that Claude, for example, doesn't talk to a remote server. This means you need a local stdio-based implementation that can communicate with your server. The steps in **mcp-proxy** are great, but it too doesn’t support v0.2 yet – it was requesting the SSE on the GET endpoint, and the new protocol doesn’t have that functionality. I ended up wasting a lot of time figuring it out.
+
+- 📋 **Long-running Tasks:**  
+  I was chatting with Simba Khadder on Friday, and I mentioned how long-running tasks are still not supported directly. Thankfully, the new protocol includes mechanisms with event IDs that can be used for fetching statuses. I haven't implemented this feature yet.
+
+- 🚦 **Deployment Thoughts:**  
+  Overall, MCP appears to be a separate endpoint you’ll likely run alongside your REST endpoints and OAuth flows. This separation is great because you can have a dedicated server for agent traffic. Cloudflare seems to be the most promising deployment mechanism if you don’t want to host it yourself. However, once the MCP repository catches up with v0.2, you might choose to self-host.
+
+## Final Thoughts
+
+MCP v0.2 is a great step in the right direction but still needs a few iterations to mature its tooling and SDK. Maybe wait a couple of weeks for further refinements? Remember, your true value lies in what your agent can do and the end user experience – not solely in MCP.
+
+Check out the [code on GitHub](https://github.com/elevate-human-experiences/only_mcp).
