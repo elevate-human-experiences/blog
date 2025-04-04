@@ -16,7 +16,11 @@
             "group": "Model Context Protocol",
             "pages": [
               "mcp/mcp0.2",
-              "mcp/specs0.2"
+              {
+                "group": "References",
+                "icon": "globe",
+                "pages": ["mcp/specs0.2"]
+              }              
             ]
           },
           {
