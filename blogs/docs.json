@@ -25,26 +25,21 @@
     ],
     "global": {
       "anchors": [
-        {
-          "anchor": "Back",
-          "href": "https://elevate.do",
-          "icon": "globe"
-        }
+        
       ]
     }
   },  
   "navbar": {
     "links": [
       {
-        "label": "Support",
+        "label": "Mail",
         "href": "mailto:rahul@elevate.do"
+      },
+      {
+        "label": "Home",
+        "href": "https://elevate.do"
       }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Blog",
-      "href": "https://blog.elevate.do"
-    }
+    ]    
   },
   "footer": {
     "socials": {
