@@ -9,7 +9,6 @@
   },
   "navigation": {
     "tabs": [
-      
       {
         "tab": "Blog",
         "groups": [
@@ -18,6 +17,12 @@
             "pages": [
               "mcp/mcp0.2",
               "mcp/specs0.2"
+            ]
+          },
+          {
+            "group": "Musings",
+            "pages": [
+              "musings/april_fools"
             ]
           }
         ]
