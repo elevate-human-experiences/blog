@@ -15,22 +15,16 @@
           {
             "group": "Agent-to-Agent Protocol",
             "pages": [
-              {
-                "group": "Deep Research",
-                "icon": "globe",
-                "pages": ["a2a/deep-research/a2a"]
-              }              
+              "mcp/mcp0.2",
+              "a2a/deep-research/a2a"
             ]
           },
           {
             "group": "Model Context Protocol",
             "pages": [
               "mcp/mcp0.2",
-              {
-                "group": "Deep Research",
-                "icon": "globe",
-                "pages": ["mcp/deep-research/mcp-discussion","mcp/deep-research/specs0.2"]
-              }              
+              "mcp/deep-research/specs0.2",
+              "mcp/deep-research/mcp-discussion"
             ]
           },
           {
