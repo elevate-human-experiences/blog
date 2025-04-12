@@ -15,7 +15,6 @@
           {
             "group": "Agent-to-Agent Protocol",
             "pages": [
-              "mcp/mcp0.2",
               "a2a/deep-research/a2a"
             ]
           },
