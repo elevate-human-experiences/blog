@@ -22,6 +22,7 @@
           {
             "group": "Model Context Protocol",
             "pages": [
+              "mcp/mcp-business-perspective",
               "mcp/mcp0.2",
               "mcp/deep-research/specs0.2",
               "mcp/deep-research/mcp-discussion"
