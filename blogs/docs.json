@@ -14,6 +14,14 @@
         "tab": "Blog",
         "groups": [
           {
+            "group": "A.I. in the Workplace",
+            "pages": [
+              "ai-workplace/new-wave-of-ai-at-work",
+              "ai-workplace/deep-research/shopify-ceo-post",
+              "ai-workplace/deep-research/employee-reactions"
+            ]
+          },
+          {
             "group": "Agent-to-Agent Protocol",
             "pages": [
               "a2a/deep-research/a2a",
