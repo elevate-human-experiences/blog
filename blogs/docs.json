@@ -40,8 +40,9 @@
           {
             "group": "Musings",
             "pages": [
-              "musings/aprils-fool",
-              "musings/ai-generated-slop"
+              "musings/agentic-annual-review",
+              "musings/ai-generated-slop",
+              "musings/aprils-fool"
             ]
           }
         ]
