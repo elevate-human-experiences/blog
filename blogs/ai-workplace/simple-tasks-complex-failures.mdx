@@ -1,0 +1,101 @@
+---
+title: "Simple Tasks, Complex Failures"
+description: "Written by Adria Hou and Rahul Parundekar. Published on 27th April, 2025."
+---
+Multiple CEOs are now mandating that their employees make “reflexive AI usage” the baseline. This mandate is sparking a new wave of AI usage in the workplace, all hoping to capture productivity gains. Those productivity gains can be elusive, even for people more experienced with the new tools, and we thought we’d share an example.
+
+<img height="200" src="/images/hallucinations.webp" title="Simple Tasks, Complex Failures: Hallucination"/>
+
+> “This past week, I (Rahul) wanted to use ChatGPT to assist with a simple task. I had hosted a private event on Wednesday, and wanted to write a brief follow-up email to attendees with some professional information on the 35 people who had joined the meetup. This task should have taken me 30 minutes, but it became a three-hour journey finding and fixing the hallucinations that ChatGPT had added.
+>
+> I wrote a prompt with the names of 35 people and their LinkedIn profiles and asked ChatGPT’s new o3 model to draft the email. I asked for a couple of lines on what each attendee is working on and to group attendees by subject matter categories. I spent 30 minutes writing this prompt, which included manually searching for and gathering the relevant LinkedIn data. And sure, I could have written that two-liner at the same time, but ChatGPT being such an integral part of my workflow these days, it was “reflexive” for me to use it. This is what it actually did:
+>
+> - It added completely fictional people and their bios into the email.
+> - There was a name that was a common first and last name. The model pulled profiles for four different people.
+> - It quietly dropped another four people because they didn’t fit the categories I’d supplied. I only realized some people were missing when I was reading through the final draft.
+> - Several bios were not about current roles — even though I had given the model the specific LinkedIn profiles, somehow the model had grabbed old employment information like “Data Scientist at Google” instead of “Founder.”
+> - GPT’s new memory feature decided this event must be related to a completely different wine-tasting series I had hosted months ago and added irrelevant context.
+>
+> By the time I untangled the mess, any claim of “10x productivity” felt long gone, and I was frustrated. I should have done it myself.”
+
+We decided to dig into what went wrong.
+
+## Wildcard Hallucinations
+
+Generative AI is fundamentally a different type of technology. The previous big waves of technological innovation—mobile and cloud—transformed our world, but were predictable and deterministic technologies. Large-language models (LLMs) are different: the same prompt can produce many different outcomes, from interesting insight to confident lie all in one session. OpenAI’s own tests found its latest reasoning model, o3, hallucinates on 33% of people-related questions, double its predecessor. The lighter o4-mini clocks in at 48%.
+
+Hallucination isn’t a corner-case bug; it’s intrinsic behavior. The ability of the LLM to predict the next word (and subsequently entire paragraphs and documents) is what makes the model useful. A “hallucination” is a prediction, but not the right prediction. Predicting an incorrect numerical total or percentage might lead the reader to incorrect conclusions and disastrous outcomes. This forces users and builders to approach this technology with a different mindset than they have with all previous technologies that they’ve dealt with. The non-determinism needs to be built into the risk.
+
+## Complex Failures
+
+Here’s what another LLM model had to say when we copied the reasoning and the task given to it to judge the working:  
+The agent’s reasoning in this transcript is not sound. Rather than using the given attendee list and the provided LinkedIn URLs to extract each person’s actual current role and projects, it went off on a wild goose chase—searching for generic AI founders, MLOps organizers, and video-AI startups that had nothing to do with the people you listed. Below are the key problems and logical fallacies at play:
+
+> - **Ignoring the Data at Hand**  
+>   - **Fallacy:** When faced with a clear list of names and links, the agent should have simply visited those URLs and pulled out the up-to-date titles and employers. Instead, it wandered through dozens of irrelevant searches.  
+>   - **Why it matters:** You already gave the canonical LinkedIn profiles; there was no need to “guess” handles or hunt for profiles outside that list.
+> 
+> - **Search-Driven Confirmation Bias**  
+>   - **Fallacy:** The agent repeatedly searched for `[person 1] [person 2]`, `[person 3]` etc.—all people who were not on your attendee roster. It assumed that because it knew of these names in the AI world, they must be at your event.  
+>   - **Why it matters:** This is classic confirmation bias: seeing what you expect (well-known AI founders) rather than what’s actually there.
+> 
+> - **Overfitting & Relevance Fallacy**  
+>   - **Fallacy:** Mapping event categories (`Data`, `Infrastructure`…) to every AI-adjacent startup and community organizer it could find online, irrespective of whether those individuals attended the event.  
+>   - **Why it matters:** This led to a bloated, off-topic list of people that obscures the real attendees and defeats the purpose of an introduction email.
+> 
+> - **Misplaced Granularity & Scope Creep**  
+>   - **Fallacy:** Spending 19 minutes and 24 sources to assemble a hypothetical “ultimate AI guest list” instead of a concise summary of the 30 people you provided.  
+>   - **Why it matters:** You wanted a thank-you email with intros among the people who actually came — not an encyclopedic search of the entire AI ecosystem.
+> 
+> - **Straw-Man Date Assumption**  
+>   - **Fallacy:** The agent speculates about April 23 or 24, 2025, without checking the date you said (“yesterday”). It treats the event date as ambiguous and chases down irrelevant calendar details.  
+>   - **Why it matters:** A simple statement of “Yesterday’s Wine & AI meetup (April 24, 2025)” would have sufficed for context.
+
+There are a few places where this analysis itself is not necessarily accurate, but it’s amusing to try. You also can’t rely on another agent to evaluate an agent well, either.
+
+## General Tips
+
+- **Frame your task clearly:** Supply only the information needed, define explicit output formats, and set unambiguous instructions. A tightly scoped prompt keeps the model focused on the actual task rather than free-ranging. Breaking down your workflow into smaller bite-sized conversations with the agent will help you move forward without expecting it to achieve large, high-level outcomes. Tell it how you do it by giving examples.
+- **Experiment with different models:** Test multiple versions or providers on a small sample before committing to one. Comparing outputs helps you identify which model delivers the best balance of accuracy and reliability for your use case. Some vendors provide multiple models and provide recommendations — for example, with reasoning, with deep-research capability, etc. Build an intuition around what works best for what task.
+- **Treat web search and memory as a configuration:** Limit input context to essential data and disable features like web search and memory when they introduce noise or irrelevant associations. Narrower scope curbs hallucinations and unexpected context bleed. Many agents provide switches that you can use to turn model capabilities on or off.
+- **Ask for citations:** Prompt the agent to supply footnotes or source links alongside any factual claims. This practice lets you verify accuracy, trace information back to authoritative origins, and catch hallucinations before they propagate. Asking for citations forces the model to provide grounding to its claims.
+- **Implement guardrails:** Use checks, retrieval-augmented generation (RAG), or external data sources to verify facts. You might even add a review step where you use another agent to double-check the output of the first attempt — for example, checking calculations, bad reasoning, citing data that isn’t there, etc.
+- **Keep a human in the loop:** None of the above is foolproof. Always have a person review and approve AI outputs, especially for high-stakes or client-facing content. Human oversight is the ultimate safety net against errors that models might overlook. This could be you or another colleague who can confirm the output.
+
+
+### Get Connected, Share, and Other Socials
+
+<CardGroup>
+	<Card 
+		title="Share on LinkedIn" 
+		description="Share this article on LinkedIn." 
+		href="http://www.linkedin.com/shareArticle?mini=true&url=https://blog.elevate.do/mcp/deep-research/mcp-discussion" 
+	/>
+	<Card 
+		title="Share on X/Twitter" 
+		description="Tweet this article to your followers." 
+		href="https://twitter.com/intent/tweet?url=https://blog.elevate.do/mcp/deep-research/mcp-discussion" 
+	/>
+	<Card 
+		title="Have thoughts? I'd love to chat!" 
+		description="Schedule a conversation with me." 
+		href="https://calendar.app.google/a5e29gFgjHRiKaPV9" 
+	/>
+	<Card 
+		title="More about Rahul and Elevate.do" 
+		description="More about Rahul, Elevate Human Experiences, LLC, and services offered" 
+		href="https://elevate.do" 
+	/>
+	<Card
+		title="Follow Rahul on LinkedIn" 
+		description="Connect with or Follow Rahul Parundekar on LinkedIn." 
+		href="https://www.linkedin.com/in/rparundekar/"
+	/>
+	<Card
+		title="Follow Rahul on Twitter/X" 
+		description="Follow Rahul Parundekar on Twitter/X." 
+		href="https://x.com/RahulParundekar"
+	/>
+</CardGroup>
+
+> This article was co-authored with Adria Hou. You can find her on LinkedIn [here](https://www.linkedin.com/in/adriahou/).
