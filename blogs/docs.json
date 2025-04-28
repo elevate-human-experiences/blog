@@ -4,9 +4,9 @@
   "favicon": "favicon.svg",
   "name": "elevate.do",
   "colors": {
-    "primary": "#ebac00",
+    "primary": "#f7b305",
     "light": "#ffc300",
-    "dark": "#f7b305"
+    "dark": "#ebac00",
   },
   "navigation": {
     "tabs": [
