@@ -16,6 +16,7 @@
           {
             "group": "A.I. in the Workplace",
             "pages": [
+              "ai-workplace/deep-research/vibe-coding",
               "ai-workplace/simple-tasks-complex-failures",
               "ai-workplace/new-wave-of-ai-at-work",
               "ai-workplace/deep-research/shopify-ceo-post",
@@ -42,6 +43,7 @@
           {
             "group": "Musings",
             "pages": [
+              "musings/vibe-payroll",
               "musings/agentic-annual-review",
               "musings/ai-generated-slop",
               "musings/aprils-fool"
