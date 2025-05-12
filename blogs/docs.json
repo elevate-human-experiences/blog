@@ -43,6 +43,7 @@
           {
             "group": "Musings",
             "pages": [
+              "musings/rube-goldberg",
               "musings/vibe-payroll",
               "musings/agentic-annual-review",
               "musings/ai-generated-slop",
