@@ -14,6 +14,16 @@
         "tab": "Blog",
         "groups": [
           {
+            "group": "Model Context Protocol",
+            "pages": [
+              "mcp/mcp-business-perspective",
+              "mcp/mcp0.2",
+              "mcp/deep-research/specs0.3",
+              "mcp/deep-research/specs0.2",
+              "mcp/deep-research/mcp-discussion"
+            ]
+          },
+          {
             "group": "A.I. in the Workplace",
             "pages": [
               "ai-workplace/deep-research/vibe-coding",
@@ -30,16 +40,7 @@
               "a2a/deep-research/a2a",
               "a2a/deep-research/specs"
             ]
-          },
-          {
-            "group": "Model Context Protocol",
-            "pages": [
-              "mcp/mcp-business-perspective",
-              "mcp/mcp0.2",
-              "mcp/deep-research/specs0.2",
-              "mcp/deep-research/mcp-discussion"
-            ]
-          },
+          },          
           {
             "group": "Musings",
             "pages": [
