@@ -14,6 +14,12 @@
         "tab": "Blog",
         "groups": [
           {
+            "group": "Thoughts on Agents",
+            "pages": [
+              "thoughts-on-agents/identity"
+            ]
+          },
+          {
             "group": "Model Context Protocol",
             "pages": [
               "mcp/deep-research/specs0.3",

@@ -1,0 +1,205 @@
+---
+title: "Agent Identity"
+date: "2025-07-07"
+description: "Thoughts on a flexible, context-aware model for AI agent identity and permissions."
+---
+
+**An AI agent's identity is defined by its actions, context, and constraints—not merely by a name or static scope.**
+
+### Why We Need More Than RBAC
+
+In today's AI-driven world, agents perform critical tasks autonomously. Beyond asking whether an agent *can* perform an action, we must define *when*, *why*, and *under what context* it should—and should not—act. Traditional Role-Based Access Control (RBAC) employs static, binary scopes (e.g., `gmail.read`, `slack.post`) that quickly become unwieldy across multiple roles and environments.
+
+> **Scenario:** Rahul Parundekar uses a single inbox (`rahul@aihero.studio`) to:
+>
+> * Oversee investor communications as **CEO**
+> * Address on-call alerts as **DevOps Lead**
+> * Manage RSVPs as **Community Organizer**
+> * Analyze portfolio performance as **Investor**
+>
+> A blanket `gmail.read` permission would let a DevOps agent inspect payroll emails or allow an Investor bot to archive deployment alerts—outcomes that violate principle of least privilege.
+
+### A Contextual Ontology: Roles, Profiles, Agents
+
+To resolve these limitations, we propose three foundational concepts:
+
+1. **Role**
+   Defines a set of context-aware, semantic permission clauses within an **Organization**.
+2. **Profile**
+   Binds a **Person** to a specific **Role** within an **Organization**.
+3. **Agent**
+   A software principal that *assumes* a **Profile**, acting on behalf of the associated **Person**.
+
+---
+
+#### 1. Role
+
+A `Role` lives inside an organization and comprises:
+
+* `organization`: Identifier (e.g., `AI Hero Inc.` or `org-12345`)
+* `title`: Role name (e.g., `CEO`, `DevOps`)
+* `capabilities`: A list of high-level policy clauses (RFC‑style):
+
+  * `MUST`: Obligations
+  * `SHOULD`: Recommendations
+  * `MUST NOT`: Prohibitions
+  * `MAY` or `CAN`: Optional capabilities
+
+```yaml
+# DevOps @ AI Hero Inc.
+id: role-devops-aihero
+organization: AI Hero Inc.
+title: DevOps
+capabilities:
+  - CAN read infrastructure alert emails.
+  - MUST verify sender domains match approved analytics providers.
+  - SHOULD tag processed alerts with label "DevOps".
+  - MUST NOT access financial or HR-related messages.
+```
+
+---
+
+#### 2. Profile
+
+A `Profile` associates a **Person** with a **Role**. Profiles contain no additional instructions and represent the static binding between a person and a role. Agents may assume any existing profile.
+
+```yaml
+# Rahul's CEO profile
+id: profile-ceo-aihero
+person: Rahul Parundekar
+role: role-ceo-aihero
+```
+
+---
+
+#### Persona
+
+A `Persona` extends a `Profile` by including task-specific instructions. Personas encapsulate both the role and the operational guidance an agent should follow.
+
+1. **Newsletter Manager Persona**
+
+```yaml
+id: persona-newsletter-manager-aihero
+role: role-ceo-aihero
+instructions:
+  - Fetch and tag weekly newsletter emails.
+  - Send a summary to internal-comm@aihero.studio every Monday at 10:00 PT.
+  - Archive processed newsletters into folder "Newsletters".
+```
+
+2. **Board Interaction Persona**
+
+```yaml
+id: persona-board-interaction-aihero
+role: role-ceo-aihero
+instructions:
+  - Prioritize emails containing "Board" or "Investor" keywords.
+  - Schedule follow-up meetings in Calendar when requested.
+  - Log meeting minutes to the #board channel on Slack.
+```
+
+3. **Team Morale Persona**
+
+```yaml
+id: persona-team-morale-aihero
+role: role-ceo-aihero
+instructions:
+  - Check the #team-happiness Slack channel daily.
+  - Send positive feedback or shout-outs to team members.
+  - Flag any morale issues by creating a ticket in the HR system.
+```
+
+---
+
+#### ProfileConstraint
+
+A `ProfileConstraint` defines the subset of profiles or personas an agent is authorized to assume.
+
+```yaml
+id: constraint-rahul-assumable-profiles
+agent: chatgpt-01
+allowed_profiles:
+  - persona-newsletter-manager-aihero
+  - persona-board-interaction-aihero
+  - persona-team-morale-aihero
+```
+
+---
+
+#### 3. Agent
+
+An `Agent` is a programmatic identity that selects one `Profile` before acting:
+
+```yaml
+agent: chatgpt-01
+profile: profile-ceo-aihero
+```
+
+When an agent executes, its capabilities and constraints derive directly from its current profile.
+
+---
+
+### Example: Fine-Grained Gmail Permissions
+
+Model Rahul’s **CEO** profile with contextual Gmail access:
+
+```yaml
+# CEO @ AI Hero Inc.
+id: role-ceo-aihero
+organization: AI Hero Inc.
+title: CEO
+capabilities:
+  - MUST read emails containing investor or board-related keywords.
+  - SHOULD archive newsletters into folder "CEO-News".
+  - MAY send emails from rahul@aihero.studio.
+  - MUST log sent-message IDs to the audit service.
+  - MUST NOT operate outside 09:00–17:00 PT.
+```
+
+---
+
+### Advantages
+
+* **Least Privilege by Context:** Agents operate only within their profile’s scope and temporal constraints.
+* **Expressive Policy DSL:** Free-text, RFC-like clauses capture real-world nuances.
+* **Unified Model:** No separate contract layer; *Roles* encapsulate both scope and policy.
+
+
+### Future Directions
+
+In an upcoming post, we will explore how to integrate this context-rich identity model with standard authentication frameworks (such as OAuth 2.1) to enforce these roles and profiles in practice. By combining our ontological approach with robust authentication tokens and protocols, we aim to complete the picture for secure, end-to-end agent authorization. Stay tuned!
+
+### Get Connected, Share, and Other Socials
+
+<CardGroup>
+  <Card 
+    title="Share on LinkedIn" 
+    description="Share this article on LinkedIn." 
+    href="http://www.linkedin.com/shareArticle?mini=true&url=https://blog.elevate.do/mcp/deep-research/specs0.2" 
+  />
+  <Card 
+    title="Share on X/Twitter" 
+    description="Tweet this article to your followers." 
+    href="https://twitter.com/intent/tweet?url=https://blog.elevate.do/mcp/deep-research/specs0.2" 
+  />
+  <Card 
+    title="Have thoughts? I'd love to chat!" 
+    description="Schedule a conversation with me." 
+    href="https://calendar.app.google/a5e29gFgjHRiKaPV9" 
+  />
+  <Card 
+		title="More about Rahul and Elevate.do" 
+		description="More about Rahul, Elevate Human Experiences, LLC, and services offered" 
+		href="https://elevate.do" 
+	/>
+	<Card
+		title="Follow Rahul on LinkedIn" 
+		description="Connect with or Follow Rahul Parundekar on LinkedIn." 
+		href="https://www.linkedin.com/in/rparundekar/"
+	/>
+	<Card
+		title="Follow Rahul on Twitter/X" 
+		description="Follow Rahul Parundekar on Twitter/X." 
+		href="https://x.com/RahulParundekar"
+	/>
+</CardGroup>
