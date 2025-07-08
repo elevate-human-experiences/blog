@@ -6,6 +6,24 @@ description: "Thoughts on a flexible, context-aware model for AI agent identity 
 
 **An AI agent's identity is defined by its actions, context, and constraints—not merely by a name or static scope.**
 
+### The Prompt Control Problem
+
+Over the last few weeks, I've been experimenting with Claude Desktop and custom-built MCPs (Model Context Protocols). One thing that immediately stood out: you can't update the prompt. This means I have no control over how to guide the agent into doing work *the way I work*.
+
+This got me thinking about agent identity, and I wanted to share some quick takeaways—then I'd love to hear how you're approaching this in your projects.
+
+When people do work, they operate within a **Role**, but *how* you execute that work is probably different than how someone else with the same title at your organization does their work. This personal approach is the unique value you bring.
+
+So here's the question: Is there a mechanism for you to tell an agent how you do your work, in a world where prompts are becoming increasingly controlled by the chatbots you use and the MCP tools they run?
+
+I think the answer lies in rethinking agent identity altogether.
+
+### The Missing Layer: From Prompt Control to Agent Identity
+
+The MCP prompt control problem reveals a deeper architectural challenge. Current AI systems conflate **what an agent can do** (capabilities) with **how it should behave** (identity). Traditional Role-Based Access Control (RBAC) gives us binary permissions, but what we really need is a way to encode not just *permissions*, but *preferences*, *workflows*, and *context-aware decision making*.
+
+This is where a more sophisticated model of agent identity becomes crucial. Instead of losing control over how an agent works when using tools like Claude Desktop with MCPs, we need a framework that preserves and expresses your unique working style across different AI interactions.
+
 ### Why We Need More Than RBAC
 
 In today's AI-driven world, agents perform critical tasks autonomously. Beyond asking whether an agent *can* perform an action, we must define *when*, *why*, and *under what context* it should—and should not—act. Traditional Role-Based Access Control (RBAC) employs static, binary scopes (e.g., `gmail.read`, `slack.post`) that quickly become unwieldy across multiple roles and environments.
