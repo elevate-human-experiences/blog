@@ -6,7 +6,7 @@ description: "How GenAI agents can help with multi-step cluster diagnostics on K
 
 > This article was co-authored with Shankar Ganeshan. You can find him on LinkedIn [here](https://www.linkedin.com/in/shankar-ganesan-653226a/).
 
-# Why Kubernetes troubleshooting still hurts and why we built `k8x`.
+## Why Kubernetes troubleshooting still hurts and why we built `k8x`.
 
 Even veteran SREs know the familiar pain cycle:
 
@@ -18,7 +18,7 @@ Even veteran SREs know the familiar pain cycle:
 
 Each scenario is *multi-step*, context-heavy, and a single typo can derail the process. General-purpose LLM helpers (ChatGPT, Claude, Copilot Chat) can **suggest** commands, but you still copy-paste, re-run, and stitch results together.
 
-# The agentic leap: from *suggestion* to *orchestrated review*
+## The agentic leap: from *suggestion* to *orchestrated review*
 
 Recent agents like **GitHub Copilot Chat** (in VS Code w/ terminal access), **Claude Code** (terminal-native edits) and Goose showed a new pattern: the LLM *drives* an interactive loop—executes safe commands autonomously, then narrates the findings.
 
@@ -31,7 +31,7 @@ Recent agents like **GitHub Copilot Chat** (in VS Code w/ terminal access), **Cl
 
 Unlike code-centric tools, *k8x* is infra-native. It understands resource kinds, status fields, events, and failure taxonomies (image pull, scheduling, OOMKilled).
 
-# Design choices that matter to operators
+## Design choices that matter to operators
 
 `k8x` works in your console with the your current `kubectl` configuration, to perform autonomous, multi-step workflows to detect and troubleshoot kubernetes issues with your credentials.
 
@@ -44,7 +44,7 @@ Unlike code-centric tools, *k8x* is infra-native. It understands resource kinds,
 
 There's more to come, including write permissions, parallelism, etc. Conrtributions are welcome. 
 
-# A day in the life with *k8x*
+## A day in the life with *k8x*
 
 ```bash
 # 1️⃣ Something is off
@@ -65,7 +65,7 @@ Suggested fix: run `kubectl exec` into db-migration-pod or scale replicas to 0/1
 
 In \~30 s, you get an actionable story instead of fifteen manual commands.
 
-# How a *multi-step* review actually works
+## How a *multi-step* review actually works
 
 1. **Intent parsing** – Translates English prompts into an internal diagnostic goal.
 2. **Planning** – LLM selects a **safe** chain of read-only `kubectl` queries.
@@ -74,7 +74,7 @@ In \~30 s, you get an actionable story instead of fifteen manual commands.
 
 Only redacted command output reaches the LLM—no full application logs—another trust measure.
 
-# Where *k8x* stands in the AI-ops landscape
+## Where *k8x* stands in the AI-ops landscape
 
 | Tool                    | Domain                | Autonomy                           | Local-first? | Write access        |
 | ----------------------- | --------------------- | ---------------------------------- | ------------ | ------------------- |
@@ -85,7 +85,7 @@ Only redacted command output reaches the LLM—no full application logs—anothe
 
 *k8x* fills the gap for platform and DevOps engineers looking for Copilot-level assistance after deployment, not just in CI/CD.
 
-# Getting started in 60 seconds
+## Getting started in 60 seconds
 
 ```bash
 brew tap aihero/k8x
@@ -96,7 +96,7 @@ k8x -c "Are all pods running?"
 
 You'll never look at a 3-screen tmux layout the same way again.
 
-# Roadmap sneak-peek
+## Roadmap sneak-peek
 
 * **v0.2 – Declarative fixes**
 
@@ -108,14 +108,11 @@ You'll never look at a 3-screen tmux layout the same way again.
 
   * Store successful sessions as YAML recipes to auto-trigger on alerts.
 
-# Final thoughts
+## Final thoughts
 
 Generative-AI agents are moving from IDEs into production infrastructure. By combining **LLM planning**, **policy-guarded execution**, and **domain-specific reasoning**, *k8x* transforms Kubernetes troubleshooting from a scavenger hunt into a guided review. Start with read-only diagnostics today; when you're ready, the agent will apply fixes—one audited pull request at a time.
 
-# Get Connected, Share, and Other Socials
-
-
-### Get Connected, Share, and Other Socials
+## Get Connected, Share, and Other Socials
 
 <CardGroup>
   <Card 
