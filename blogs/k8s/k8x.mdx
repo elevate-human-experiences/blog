@@ -6,13 +6,14 @@ description: "How GenAI agents can help with multi-step cluster diagnostics on K
 
 > This article was co-authored with Shankar Ganeshan. You can find him on LinkedIn [here](https://www.linkedin.com/in/shankar-ganesan-653226a/).
 
-## Why Kubernetes troubleshooting still hurts and why we built `k8x`.
-
 When you're setting up a Kubernetes cluster, DevOps and Platform engineers feel like they're navigating a maze. 
 Take a simple service deployment: you might have to check the deployment (`kubectl get deployment`), the service (`kubectl get service`), inspect events (`kubectl describe pod`), the logs (`kubectl logs pod-name`), and even Ingress rules (`kubectl get ingress`). 
 Each step requires context, copy-pasting names and ids from one place into another.
 A single typo can leave you scratching your head. Worse, incomplete information can lead you down the wrong path and waste hours.
 The complexity of multi-step diagnostics, especially when things go wrong, can be overwhelming.
+
+
+## Why Kubernetes troubleshooting still hurts and why we built `k8x`.
 
 Even veteran SREs know the familiar pain cycle:
 
