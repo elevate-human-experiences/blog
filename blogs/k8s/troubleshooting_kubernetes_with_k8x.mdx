@@ -4,53 +4,48 @@ date: "2025-07-18"
 description: "This article was co-authored with [Shankar Ganeshan](https://www.linkedin.com/in/shankar-ganesan-653226a/)"
 ---
 
-When you're setting up a Kubernetes cluster, DevOps and Platform engineers feel like they're navigating a maze. 
-Take a simple service deployment: you might have to check the deployment (`kubectl get deployment`), the service (`kubectl get service`), inspect events (`kubectl describe pod`), the logs (`kubectl logs pod-name`), and even Ingress rules (`kubectl get ingress`). 
-Each step requires context, copy-pasting names and ids from one place into another.
-A single typo can leave you scratching your head. Worse, incomplete information can lead you down the wrong path and waste hours.
-The complexity of multi-step diagnostics, especially when things go wrong, can be overwhelming.
-
+When you're setting up a Kubernetes cluster, DevOps and Platform engineers feel like they're navigating a maze. Take a simple service deployment: you might have to check the deployment (`kubectl get deployment`), the service (`kubectl get service`), inspect events (`kubectl describe pod`), the logs (`kubectl logs pod-name`), and even Ingress rules (`kubectl get ingress`). Each step requires context, copy-pasting names and ids from one place into another. A single typo can leave you scratching your head. Worse, incomplete information can lead you down the wrong path and waste hours. The complexity of multi-step diagnostics, especially when things go wrong, can be overwhelming.
 
 ## Why Kubernetes troubleshooting still hurts and why we built `k8x`.
 
 Even veteran SREs know the familiar pain cycle:
 
-| Symptom                                            | Usual manual steps                                           |
-| -------------------------------------------------- | ------------------------------------------------------------ |
-| Pods in `CrashLoopBackOff`                         | • `kubectl get pods -A` → copy failing names <br/> • `kubectl logs …` (repeat per pod & container) <br/> • grep for hints, cross-check ConfigMaps |
-| 503s on an Ingress                                 | • Check Service endpoints → kube-proxy rules → NetworkPolicy <br/> • Compare readiness probes & resource pressure|
-| "`myservice` works on *most* nodes"                         | • Inspect taints/labels, daemonsets, CNI logs <br/> • Describe nodes for kernel versions & allocatable|
+| Symptom                             | Usual manual steps                                                                                                                                  |
+| ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Pods in `CrashLoopBackOff`          | • `kubectl get pods -A` → copy failing names <br /> • `kubectl logs …` (repeat per pod & container) <br /> • grep for hints, cross-check ConfigMaps |
+| 503s on an Ingress                  | • Check Service endpoints → kube-proxy rules → NetworkPolicy <br /> • Compare readiness probes & resource pressure                                  |
+| "`myservice` works on _most_ nodes" | • Inspect taints/labels, daemonsets, CNI logs <br /> • Describe nodes for kernel versions & allocatable                                             |
 
-Each scenario is *multi-step*, context-heavy, and needs you to track context across multiple kubernetes commands. 
-You need to keep a note of resource ids to use them in other resource descriptions and logs to know what's going on. 
+Each scenario is _multi-step_, context-heavy, and needs you to track context across multiple kubernetes commands.
+You need to keep a note of resource ids to use them in other resource descriptions and logs to know what's going on.
 
-## The agentic leap: from *suggestion* to *orchestrated review*
+## The agentic leap: from _suggestion_ to _orchestrated review_
 
-Recent agents like **GitHub Copilot Chat** (in VS Code w/ terminal access), **Claude Code** (terminal-native edits) and Goose showed a new pattern: the LLM *drives* an interactive loop—executes safe commands autonomously, then narrates the findings.
+Recent agents like **GitHub Copilot Chat** (in VS Code w/ terminal access), **Claude Code** (terminal-native edits) and Goose showed a new pattern: the LLM _drives_ an interactive loop—executes safe commands autonomously, then narrates the findings.
 General-purpose LLM helpers (ChatGPT, Claude, Copilot Chat) can go beyond **suggesting** commands - they can copy-paste, re-run, and stitch results together.
-*k8x* applies this agentic idea to Kubernetes:
+_k8x_ applies this agentic idea to Kubernetes:
 
-* **Natural-language prompts** → e.g. "Find pods that aren't ready and tell me why."
-* The agent **plans** a sequence: `kubectl get …`, `kubectl describe …`, maybe `kubectl top …`.
-* It **executes** those *read-only* commands, parses output, and **reasons** about root causes.
-* Results appear as an **explanation first**, with raw command logs one keystroke away.
+- **Natural-language prompts** → e.g. "Find pods that aren't ready and tell me why."
+- The agent **plans** a sequence: `kubectl get …`, `kubectl describe …`, maybe `kubectl top …`.
+- It **executes** those _read-only_ commands, parses output, and **reasons** about root causes.
+- Results appear as an **explanation first**, with raw command logs one keystroke away.
 
-Unlike code-centric tools, *k8x* is infra-native. It understands resource kinds, status fields, events, and failure taxonomies (image pull, scheduling, OOMKilled).
+Unlike code-centric tools, _k8x_ is infra-native. It understands resource kinds, status fields, events, and failure taxonomies (image pull, scheduling, OOMKilled).
 
 ## Design choices that matter to operators
 
 `k8x` works in your console with the your current `kubectl` configuration, to perform autonomous, multi-step workflows to detect and troubleshoot kubernetes issues with your credentials.
 
-| Principle                          | Experience                                                | Why it builds trust                                           |
-| ---------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------- |
-| **Read-only by default (v0.1)**    | Zero risk of deletions; mirrors commands you could type   | Safely trial AI before granting mutate rights (\[GitHub]\[3]) |
-| **Plain `kubectl` under the hood** | Familiar audit trail; works anywhere your kubeconfig does | No proprietary sidecars or admission webhooks                 |
-| **Multi-LLM back-end**             | Select OpenAI, Claude, or Gemini at `k8x configure`       | Avoid vendor lock-in; keep traffic in-house                   |
-| **Command history & undo**         | `k8x history list` shows past sessions                    | Auditors see exactly what ran; SREs replay in staging         |
+| Principle                          | Experience                                                | Why it builds trust                                         |
+| ---------------------------------- | --------------------------------------------------------- | ----------------------------------------------------------- |
+| **Read-only by default (v0.1)**    | Zero risk of deletions; mirrors commands you could type   | Safely trial AI before granting mutate rights ([GitHub][3]) |
+| **`Plain kubectl under the hood`** | Familiar audit trail; works anywhere your kubeconfig does | No proprietary sidecars or admission webhooks               |
+| **Multi-LLM back-end**             | Select OpenAI, Claude, or Gemini at `k8x configure`       | Avoid vendor lock-in; keep traffic in-house                 |
+| **Command history & undo**         | `k8x history list` shows past sessions                    | Auditors see exactly what ran; SREs replay in staging       |
 
-There's more to come, including write permissions, parallelism, etc. Conrtributions are welcome. 
+There's more to come, including write permissions, parallelism, etc. Conrtributions are welcome.
 
-## A day in the life with *k8x*
+## A day in the life with _k8x_
 
 ```bash
 # 1️⃣ Something is off
@@ -69,9 +64,9 @@ default$ k8x -c "my checkout service is returning 502s"
 Suggested fix: run `kubectl exec` into db-migration-pod or scale replicas to 0/1 to release lock
 ```
 
-In \~30 seconds, you get an actionable story instead of fifteen manual commands.
+In ~30 seconds, you get an actionable story instead of fifteen manual commands.
 
-## How a *multi-step* review actually works
+## How a _multi-step_ review actually works
 
 1. **Intent parsing** - Translates English prompts into an internal diagnostic goal.
 2. **Planning** - LLM selects a **safe** chain of read-only `kubectl` queries.
@@ -80,7 +75,7 @@ In \~30 seconds, you get an actionable story instead of fifteen manual commands.
 
 Only redacted command output reaches the LLM—no full application logs—another trust measure.
 
-## Where *k8x* stands in the AI-ops landscape
+## Where _k8x_ stands in the AI-ops landscape
 
 | Tool                    | Domain                | Autonomy                           | Local-first? | Write access        |
 | ----------------------- | --------------------- | ---------------------------------- | ------------ | ------------------- |
@@ -89,7 +84,7 @@ Only redacted command output reaches the LLM—no full application logs—anothe
 | **Goose**               | Multi-agent dev tasks | Runs terminal commands             | Yes          | Yes                 |
 | **k8x (v0.1)**          | Kubernetes operations | Plans & executes `kubectl` reads   | Yes          | No (read-only)      |
 
-*k8x* fills the gap for platform and DevOps engineers looking for Copilot-level assistance after deployment, not just in CI/CD.
+_k8x_ fills the gap for platform and DevOps engineers looking for Copilot-level assistance after deployment, not just in CI/CD.
 
 ## Getting started in 60 seconds
 
@@ -104,57 +99,39 @@ You'll never look at a 3-screen tmux layout the same way again.
 
 ## Roadmap sneak-peek
 
-* **v0.2 - Declarative fixes**
-
-  * Generate a patch plan (`kubectl diff`) and let humans `--approve`.
-
-* **Support ArgoCD and other k8s tools**
-
-  * Integrate with ArgoCD for GitOps workflows.
-  * Use `kubectl apply` to update resources based on agent suggestions.
-
-* **Terraform & cloud-CLI mode**
-
-  * Run `terraform plan` or `aws eks update-kubeconfig` as sub-steps.
-* **Cluster runbooks as code**
-
-  * Store successful sessions as YAML recipes to auto-trigger on alerts.
+- **v0.2 - Declarative fixes**
+  - Generate a patch plan (`kubectl diff`) and let humans `--approve`.
+- **Support ArgoCD and other k8s tools**
+  - Integrate with ArgoCD for GitOps workflows.
+  - Use `kubectl apply` to update resources based on agent suggestions.
+- **Terraform & cloud-CLI mode**
+  - Run `terraform plan` or `aws eks update-kubeconfig` as sub-steps.
+- **Cluster runbooks as code**
+  - Store successful sessions as YAML recipes to auto-trigger on alerts.
 
 ## Final thoughts
 
-Generative-AI agents are moving from IDEs into production infrastructure. By combining **LLM planning**, **policy-guarded execution**, and **domain-specific reasoning**, *k8x* transforms Kubernetes troubleshooting from a scavenger hunt into a guided review. Start with read-only diagnostics today; when you're ready, the agent will apply fixes—one audited pull request at a time.
+Generative-AI agents are moving from IDEs into production infrastructure. By combining **LLM planning**, **policy-guarded execution**, and **domain-specific reasoning**, _k8x_ transforms Kubernetes troubleshooting from a scavenger hunt into a guided review. Start with read-only diagnostics today; when you're ready, the agent will apply fixes—one audited pull request at a time.
 
 ## Get Connected, Share, and Other Socials
 
-<CardGroup>
-  <Card 
-    title="Share on LinkedIn" 
-    description="Share this article on LinkedIn." 
-    href="http://www.linkedin.com/shareArticle?mini=true&url=https://blog.elevate.do/mcp/deep-research/specs0.2" 
-  />
-  <Card 
-    title="Share on X/Twitter" 
-    description="Tweet this article to your followers." 
-    href="https://twitter.com/intent/tweet?url=https://blog.elevate.do/mcp/deep-research/specs0.2" 
-  />
-  <Card 
-    title="Have thoughts? I'd love to chat!" 
-    description="Schedule a conversation with me." 
-    href="https://calendar.app.google/a5e29gFgjHRiKaPV9" 
-  />
-  <Card 
-		title="More about Rahul and Elevate.do" 
-		description="More about Rahul, Elevate Human Experiences, LLC, and services offered" 
-		href="https://elevate.do" 
-	/>
-	<Card
-		title="Follow Rahul on LinkedIn" 
-		description="Connect with or Follow Rahul Parundekar on LinkedIn." 
-		href="https://www.linkedin.com/in/rparundekar/"
-	/>
-	<Card
-		title="Follow Rahul on Twitter/X" 
-		description="Follow Rahul Parundekar on Twitter/X." 
-		href="https://x.com/RahulParundekar"
-	/>
+<CardGroup cols={2}>
+  <Card title="Share on LinkedIn" href="http://www.linkedin.com/shareArticle?mini=true&url=https://blog.elevate.do/mcp/deep-research/specs0.2">
+    
+  </Card>
+  <Card title="Share on X/Twitter" href="https://twitter.com/intent/tweet?url=https://blog.elevate.do/mcp/deep-research/specs0.2">
+    
+  </Card>
+  <Card title="Have thoughts? I'd love to chat!" href="https://calendar.app.google/a5e29gFgjHRiKaPV9">
+    
+  </Card>
+  <Card title="More about Rahul and Elevate.do" href="https://elevate.do">
+    
+  </Card>
+  <Card title="Follow Rahul on LinkedIn" href="https://www.linkedin.com/in/rparundekar/">
+    
+  </Card>
+  <Card title="Follow Rahul on Twitter/X" href="https://x.com/RahulParundekar">
+    
+  </Card>
 </CardGroup>
