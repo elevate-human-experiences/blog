@@ -16,7 +16,7 @@
           {
             "group": "AI Infrastructure",
             "pages": [
-              "k8s/k8x"
+              "k8s/troubleshooting_kubernetes_with_k8x"
             ]
           },
           {
