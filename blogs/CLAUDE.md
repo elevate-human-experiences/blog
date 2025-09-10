@@ -149,6 +149,8 @@ When working with co-authors (like Adria Hou):
 - Include co-author bio links in the standard footer
 - Ensure both perspectives are represented fairly
 
----
+# Workflow
 
-*This style guide should be updated as the blog evolves. When in doubt, reference recent articles for current patterns and voice.*
+1. Identify the section to write the blog in.
+2. Write the blog, in the style guide above.
+3. Add it to docs.json, and move the section to the top.

@@ -14,6 +14,17 @@
         "tab": "Blog",
         "groups": [
           {
+            "group": "Musings",
+            "pages": [
+              "musings/clankers-social-phenomenon",
+              "musings/rube-goldberg",
+              "musings/vibe-payroll",
+              "musings/agentic-annual-review",
+              "musings/ai-generated-slop",
+              "musings/aprils-fool"
+            ]
+          },
+          {
             "group": "AI Infrastructure",
             "pages": [
               "k8s/troubleshooting_kubernetes_with_k8x"
@@ -51,16 +62,6 @@
               "a2a/deep-research/a2a-vs-mcp",
               "a2a/deep-research/a2a",
               "a2a/deep-research/specs"
-            ]
-          },          
-          {
-            "group": "Musings",
-            "pages": [
-              "musings/rube-goldberg",
-              "musings/vibe-payroll",
-              "musings/agentic-annual-review",
-              "musings/ai-generated-slop",
-              "musings/aprils-fool"
             ]
           }
         ]
