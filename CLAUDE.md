@@ -45,6 +45,9 @@ mintlify install
 - Each article includes frontmatter with `title`, `date`, and `description`
 - Navigation structure is defined in `blogs/docs.json` under the "navigation" object
 
+## Style Guide
+Use the [Style Guide](/blogs/Style%20Guide.md) to write the content.
+
 ## Site Configuration
 
 The site uses Mintlify's "maple" theme with a custom color scheme (primary: #f7b305). Navigation is organized into groups within a single "Blog" tab, with external links to email and homepage in the navbar.
