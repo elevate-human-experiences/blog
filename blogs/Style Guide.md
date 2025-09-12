@@ -154,3 +154,49 @@ When working with co-authors (like Adria Hou):
 1. Identify the section to write the blog in.
 2. Write the blog, in the style guide above.
 3. Add it to docs.json, and move the section to the top.
+
+# Card Group Section
+```
+---
+
+<CardGroup cols={2}>
+  <Card title="Share on LinkedIn" href="https://www.linkedin.com/sharing/share-offsite/?url=https://blog.elevate.do/beacon/claude-artifacts-classrooms" icon="linkedin">
+    Share this investment thesis with your network
+  </Card>
+  <Card title="Share on X" href="https://twitter.com/intent/tweet?url=https://blog.elevate.do/beacon/claude-artifacts-classrooms&text=Fascinating investment thesis on Claude Artifacts transforming classroom personalization" icon="twitter">
+    Tweet this article to your followers
+  </Card>
+  <Card title="Schedule a Chat" href="https://calendly.com/rahul-parundekar/30min" icon="calendar">
+    Let's discuss AI in education and potential opportunities
+  </Card>
+  <Card title="About Elevate.do" href="https://elevate.do" icon="building">
+    Learn more about our work in AI infrastructure and workplace transformation
+  </Card>
+</CardGroup>
+
+<CardGroup cols={2}>
+  <Card title="Follow on LinkedIn" href="https://linkedin.com/in/rahulparundekar" icon="linkedin">
+    Connect with me for more insights on AI and education
+  </Card>
+  <Card title="Follow on X" href="https://x.com/rahulparundekar" icon="twitter">
+    Follow for real-time thoughts on AI agents and infrastructure
+  </Card>
+</CardGroup>
+
+---
+```
+
+# References
+Each article should have references. 
+- References at the place where you mention them should look like `([Anthropic][9])`
+- References section at the end should havce an unordered list of these along with the url.
+```
+...
+* Anthropic on **Artifacts** scale and capabilities; **publish/share/remix** docs.([Anthropic][9])
+...
+
+
+...
+[9]: https://www.anthropic.com/news/build-artifacts?utm_source=chatgpt.com "Create AI-Powered Apps with Claude Artifacts"
+...
+``` 
