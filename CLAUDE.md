@@ -35,6 +35,7 @@ mintlify install
     - `thoughts-on-agents/` - Philosophical takes on AI agents
     - `k8s/` - Kubernetes and infrastructure content
     - `musings/` - Personal reflections and observations
+    - `beacon/` - My angel investment theses. A super dense VC style call for startups, research, and memos.
   - `images/` - Static assets and images
   - `README.md` - Mintlify setup instructions
 
