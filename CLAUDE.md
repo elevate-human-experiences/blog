@@ -27,6 +27,7 @@ mintlify install
 ## Project Structure
 
 - `/blogs/` - Main content directory containing:
+  - `Style Guide.md` - ALWAYS use the style guide for writing content.
   - `docs.json` - Mintlify configuration file defining site structure, navigation, and theming
   - Content organized in topical directories:
     - `ai-workplace/` - Articles about AI in workplace settings
