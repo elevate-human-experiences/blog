@@ -18,9 +18,13 @@ Your writing should sound natural and engaging, like: "AI slop isn't the biggest
 ```yaml
 ---
 title: "Article Title"
-description: "Brief description including author and publication date"
+description: "Brief description including author and today's date"
 ---
 ```
+
+Note:
+- If the seed data to you is Deep Research using Claude/ChatGPT then your description should include that (e.g. "Deep Research using ChatGPT o3, by Rahul Parundekar. Published on 17th April, 2025." ).
+- If you're creating the blog file then mention that it's an Autoblog (e.g. "Understanding Google's Agent Payment Protocol (AP2) - what it solves, how it works, and where it fits in today's agent ecosystem - by Rahul Parundekar, December 14th 2024 (Autoblog)")
 
 ### Content Organization
 

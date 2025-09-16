@@ -1,25 +1,21 @@
 ---
 title: "AP2: Google's Agent Payment Protocol Explained"
-description: "Autoblog into Google's Agent Payment Protocol (AP2) - understanding what it solves, how it works, and where it fits in today's agent ecosystem - by Rahul Parundekar, December 2024"
+description: "Understanding Google's Agent Payment Protocol (AP2) - what it solves, how it works, and where it fits in today's agent ecosystem - by Rahul Parundekar, Sept 16 2025 (Autoblog)"
 ---
 
 Google just dropped AP2 ([Agent Payment Protocol][1]) with backing from over 60 organizations including American Express, Mastercard, PayPal, Coinbase, and Salesforce. It's technically impressive—cryptographic mandates, verifiable credentials, complete audit trails. The protocol tackles a genuine problem: **how do AI agents pay for things when we're not around?** But after digging through the specs and watching teams struggle with basic MCP implementations, I can't shake this feeling that we're over-engineering for a future that hasn't arrived.
 
-Let me walk you through what AP2 actually does, then we'll talk about why it might be solving tomorrow's problems with today's complexity.
+Let me walk you through what AP2 actually does, then we'll talk about why it might be solving tomorrow's problems with a little extra complexity.
 
 ## The Problem We're Solving (Eventually)
 
 Imagine your AI assistant booking a flight while you're asleep. Sounds simple enough—until you realize the cascade of trust issues this creates. Who authorized this purchase? How does the airline know this agent represents you? What happens when something goes wrong and you need to dispute the charge?
 
 AP2 ([core principles here][2]) is built on four core principles that sound great on paper:
-
-**Openness and Interoperability** promises a protocol that works across all payment ecosystems. Ambitious, considering we can't even get payment systems to play nice with each other today.
-
-**User Control and Privacy** keeps you in charge with role-based architecture. Your payment details stay protected while agents negotiate on your behalf.
-
-**Verifiable Intent** means no more "I didn't mean to buy that" scenarios. Every transaction requires cryptographic proof of what you actually wanted.
-
-**Transaction Accountability** creates non-repudiable audit trails. When your agent inevitably does something unexpected, at least you'll have forensic-level documentation of exactly how it happened.
+- **Openness and Interoperability** promises a protocol that works across all payment ecosystems. Ambitious, considering we can't even get payment systems to play nice with each other today.
+- **User Control and Privacy** keeps you in charge with role-based architecture. Your payment details stay protected while agents negotiate on your behalf.
+- **Verifiable Intent** means no more "I didn't mean to buy that" scenarios. Every transaction requires cryptographic proof of what you actually wanted.
+- **Transaction Accountability** creates non-repudiable audit trails. When your agent inevitably does something unexpected, at least you'll have forensic-level documentation of exactly how it happened.
 
 ## How AP2 Actually Works
 
@@ -57,32 +53,155 @@ AP2 requires four players to tango:
 
 The **User** (that's you) kicks things off with a task and the financial authority to complete it. Your **Shopping Agent** acts as your digital representative, coordinating the purchase and keeping you in the loop. The **Credential Provider** manages the cryptographic heavy lifting—think of them as the notary public of the digital world. And the **Merchant Agent** represents the seller, negotiating the nitty-gritty details of what you're actually buying.
 
-Here's where it gets complex: all four need to speak AP2 fluently for any of this to work. Miss one player, and the whole system falls apart.
+Who will be the Credential Providers? Payment processors like Stripe or PayPal seem like natural fits, since they handle checkouts already, but are they not sub-processors of the **Shopping Agent**? The ecosystem is wide open, which is both exciting and a bit underrepresented.
 
-## The Protocol Stack (And Why It's Getting Tall)
 
-AP2 doesn't exist in isolation—it's part of a growing stack of agent protocols. You've got **MCP** at the base, connecting agents to tools and data sources. **A2A** sits on top, enabling agents to talk to each other. And now **AP2** adds the payments layer.
+## Workflow: The 32-Step Dance
 
-The layered approach makes sense architecturally. Use MCP alone for read-only operations. Add A2A when agents need to collaborate. Bolt on AP2 when money enters the picture. But here's the rub: most teams are still wrestling with basic MCP implementations. Adding more layers feels premature when the foundation is still wobbly.
+Here's where AP2's complexity becomes daunting. What the documentation calls an "illustrative transaction flow" ([full specs here][4]) actually involves **32 distinct steps** for a single purchase. Let me walk you through the highlights:
 
-## The 32-Step Marathon (Yes, Really)
-
-Here's where AP2's complexity becomes almost comical. What the documentation calls an "illustrative transaction flow" ([full specs here][4]) actually involves **32 distinct steps** for a single purchase. Let me walk you through the highlights:
+*The AP2 specification includes a detailed sequence diagram at [Section 7.1](https://ap2-protocol.org/specification/#71-illustrative-transaction-flow) showing the complete 32-step transaction flow:*
 
 ```mermaid
-graph TD
-    U[User] -->|1. Shopping prompt| SA[Shopping Agent]
-    SA -->|2-5. Intent creation| CP[Credential Provider]
-    CP -->|6. Payment methods| SA
-    SA -->|7-9. Discovery| MA[Merchant Agent]
-    MA -->|10-15. Cart creation| SA
-    SA -->|16. Show cart| U
-    U -->|17. Select payment| SA
-    SA -->|18-23. Payment mandate| CP
-    CP -->|24-27. Tokenization| PP[Payment Processor]
-    PP -->|28-30. Authorization| Network
-    Network -->|31-32. Receipts| All
+sequenceDiagram
+    participant user as User
+    participant sa   as Shopping Agent
+    participant cp   as Credential Provider
+    participant ma   as Merchant Agent
+    participant m    as Merchant
+    participant mpp  as Merchant Payment Processor
+
+    user ->> sa: 1. Shopping Prompts
+    sa   ->> user: 2. IntentMandate confirmation
+    user --) sa: 3. Confirm
+
+    user ->> sa: 4. (optional) Credential Provider
+    user ->> sa: 5. (optional) Shipping Address
+
+    sa ->> cp: 6. Get Payment Methods
+    cp --) sa: 7. { payment methods }
+
+    sa ->> ma: 8. IntentMandate
+    note over ma: 9. Create CartMandate
+
+    ma ->> m: 10. sign CartMandate
+    m --) ma: 11. { signed CartMandate }
+    ma --) sa: 12. { signed CartMandate }
+
+    sa ->> cp: 13. Get user payment options
+    cp --) sa: 14. { payment options }
+
+    sa ->> user: 15a. Show CartMandate
+    sa ->> user: 15b. Payment Options Prompt
+
+    user --) sa: 16. payment method selection
+
+    sa ->> cp: 17. Get payment method token
+    cp --) sa: 18. { token }
+
+    note over sa: 19. Create PaymentMandate
+    sa ->> user: 20. Redirect to trusted device surface<br/>{ PaymentMandate, CartMandate }
+    note over user: 21. User confirms purchase<br/>& device creates attestation
+    user --) sa: 22. { attestation }
+
+    sa ->> cp: 23. PaymentMandate + attestation
+
+    note over cp: Tokenization call to Network, if applicable.<br/>Request Agent Token from Payment Mandate and<br/>any needed supplemental transaction data.
+
+    sa ->> ma: 24. purchase { PaymentMandate + attestation }
+    ma  ->> mpp: 25. initiate payment { PaymentMandate + attestation }
+    mpp ->> cp:  26. request payment credentials { PaymentMandate }
+    cp  --) mpp: 27. { payment credentials }
+
+    note over mpp: 28. Process payment
+    mpp ->> cp: 29. Payment receipt
+    mpp ->> ma: 30. Payment receipt
+    ma  --) sa: 31. Payment receipt
+    sa  ->> user: 32. Purchase completed + receipt
 ```
+
+## Breaking Down the 32 Steps
+
+### Phase 1: Intent Formation (Steps 1-7)
+**Purpose**: Establish user intent and payment discovery
+
+1. **Shopping Prompts** → User provides shopping request to Shopping Agent
+2. **IntentMandate Confirmation** → Shopping Agent presents intent for user confirmation
+3. **User Confirms** → User approves the IntentMandate
+4. **(Optional) Credential Provider** → User may specify preferred credential provider
+5. **(Optional) Shipping Address** → User provides shipping info to ensure final pricing
+6. **Get Payment Methods** → Shopping Agent queries available payment options from Credential Provider
+7. **Payment Methods Returned** → Credential Provider responds with available payment methods
+
+### Phase 2: Cart Building & Merchant Validation (Steps 8-12)
+**Purpose**: Create and validate the shopping cart with merchant
+
+8. **IntentMandate to Merchant** → Shopping Agent sends intent to Merchant Agent
+9. **Create CartMandate** → Merchant Agent builds cart based on intent
+10. **Sign CartMandate** → Merchant entity (not agent) signs to guarantee fulfillment at specified price
+11. **Signed CartMandate Returned** → Merchant sends signed cart back to Merchant Agent
+12. **CartMandate to Shopping Agent** → Merchant Agent forwards signed cart to Shopping Agent
+
+### Phase 3: Payment Options & User Review (Steps 13-16)
+**Purpose**: Present cart and payment options for user selection
+
+13. **Get User Payment Options** → Shopping Agent requests user-specific payment options
+14. **Payment Options Returned** → Credential Provider returns available payment methods
+15. **Show Cart & Payment Options** → Shopping Agent presents:
+    - 15a: CartMandate details
+    - 15b: Payment options prompt
+16. **Payment Method Selection** → User selects preferred payment method
+
+### Phase 4: Payment Mandate Creation (Steps 17-23)
+**Purpose**: Create and attest payment authorization
+
+17. **Get Payment Method Token** → Shopping Agent requests token from Credential Provider
+18. **Token Returned** → Credential Provider provides payment token
+19. **Create PaymentMandate** → Shopping Agent generates payment authorization
+20. **Redirect to Trusted Surface** → User sent to secure environment with PaymentMandate & CartMandate
+21. **User Confirms & Attestation** → User confirms purchase; device creates cryptographic attestation
+22. **Attestation Returned** → Signed attestation sent to Shopping Agent
+23. **PaymentMandate + Attestation** → Shopping Agent sends both to Credential Provider for validation
+
+### Phase 5: Payment Processing (Steps 24-27)
+**Purpose**: Execute payment through merchant's processor
+
+24. **Purchase Request** → Shopping Agent sends PaymentMandate + attestation to Merchant Agent
+25. **Initiate Payment** → Merchant Agent forwards to Merchant Payment Processor
+26. **Request Payment Credentials** → Payment Processor requests credentials from Credential Provider
+27. **Payment Credentials Returned** → Credential Provider provides payment credentials
+
+### Phase 6: Settlement & Receipt Distribution (Steps 28-32)
+**Purpose**: Process payment and distribute receipts
+
+28. **Process Payment** → Merchant Payment Processor executes transaction
+29. **Receipt to Credential Provider** → Payment receipt sent for records
+30. **Receipt to Merchant Agent** → Payment confirmation sent to merchant
+31. **Receipt to Shopping Agent** → Transaction confirmation forwarded
+32. **Purchase Complete** → User receives final receipt and confirmation
+
+## Key Implementation Details
+
+### Critical Design Decisions
+
+- **Step 5**: Shipping address must be provided before cart creation to ensure final pricing accuracy. All selections affecting price must be completed before CartMandate creation.
+
+- **Step 10**: The merchant entity (not the agent) signs the CartMandate, creating a binding commitment to fulfill the order at the specified SKU, price, and shipping terms.
+
+- **Step 15**: This is the **load-bearing step** where the user verifies all transaction details before proceeding. This represents the critical trust moment in the entire flow.
+
+- **Step 20-21**: The "trusted device surface" redirect ensures payment confirmation happens in a secure environment, with device-level attestation providing cryptographic proof of user intent.
+
+- **PaymentMandate vs CartMandate**: These serve distinct purposes:
+  - **CartMandate**: Contains all information the merchant needs to fulfill the order
+  - **PaymentMandate**: Provides payment authorization with AI agent involvement indicators (Human Present vs Human Not Present)
+
+### Network Integration
+
+Though not shown in the diagram, Step 28 includes the Payment Service Provider sending transaction authorization (with PaymentMandate) to supporting networks and issuers. This allows these parties to:
+- Recognize AI agent involvement in the transaction
+- Apply appropriate risk assessment rules
+- Make informed approve/deny/challenge decisions based on the transaction modality
 
 ### The Main Acts:
 
@@ -121,6 +240,51 @@ Every mandate gets cryptographically signed. Every transaction creates non-repud
 ### Payment Flexibility
 
 AP2 plays nice with traditional payment cards, bank transfers, and even cryptocurrencies (through the A2A x402 extension). Platform-specific payment methods? Also supported. They've thought of everything—which might be part of the problem.
+
+## How Payments Actually Work Today on MCP/A2A
+
+Before diving into what AP2 promises, let's talk about how teams are actually handling payments and value exchange in the MCP/A2A ecosystem right now. Spoiler: it's a patchwork of workarounds that keep authentication on-protocol and payments decidedly off-protocol.
+
+### The OAuth Dance: "Just Use Your Regular Account"
+
+The most common approach? Standard SaaS subscriptions with OAuth bridges to MCP. You pay Anthropic or OpenAI or whoever your regular monthly fee, then OAuth that account into your MCP server. Your agent gets access to the service through your authenticated account. Simple, boring, works.
+
+This is how most consumer-facing AI services operate today. You're not really paying through MCP—you're paying the old-fashioned way and then letting MCP borrow your credentials. It's like giving your teenager your Netflix password instead of teaching them how to pay bills.
+
+### B2B Contracts and Secret Handshakes
+
+For enterprise deployments, it's even more old-school. Companies negotiate traditional contracts, sign PDFs (probably via DocuSign), and then provision API keys or secret tokens for their agents to use. The payment happens through accounts receivable, ACH transfers, or wire transfers—the same way enterprises have been paying for software since the dawn of SaaS.
+
+The "agent" part is just another API consumer with a fancy name. Authentication happens through privately provisioned keys that get rotated quarterly (if you're lucky) or never (if you're realistic).
+
+### Pay-Per-Use with Pre-Paid Credits
+
+Some services have gotten slightly more sophisticated with token-based systems. You pre-purchase credits (image generation tokens, API calls, compute hours), and your agent draws down from that balance. Think of it like a toll road E-ZPass for APIs.
+
+This works reasonably well for metered services but requires you to:
+1. Pre-fund your account (no pay-as-you-go)
+2. Monitor credit balances (or risk service interruption)
+3. Top up manually when running low (automation? what automation?)
+
+Services like Midjourney, various LLM providers, and cloud compute platforms use this model. Your agent authenticates with MCP/A2A protocols, but the actual value exchange happened when you entered your credit card on their website last month.
+
+### The Current Reality: Authentication ≠ Payment
+
+Here's the key insight: **Authentication lives on MCP/A2A, but payment lives everywhere else.**
+
+The protocols handle identity, permissions, and API access beautifully. But when it comes to actually exchanging value? We're using the same payment rails we've used for the last decade. Credit cards entered into web forms. Wire transfers initiated by humans. Purchase orders approved in Salesforce.
+
+This disconnect creates real friction:
+- **No Dynamic Pricing**: Your agent can't negotiate rates because payment terms were fixed in a contract six months ago
+- **No Micro-Transactions**: Everything needs to be batched into monthly bills or pre-paid in chunks
+- **No Agent-to-Agent Commerce**: Agents can share data but can't actually transact with each other
+- **Manual Reconciliation**: Finance teams still manually matching invoices to usage reports
+
+### Why This Matters for AP2
+
+This context is crucial for understanding both why AP2 exists and why adoption will be challenging. We're not replacing nothing—we're replacing a bunch of "good enough" workarounds that people have already built and gotten comfortable with.
+
+The bar isn't "better than nothing." It's "better than OAuth + Stripe." That's a much higher bar.
 
 ## Reality Check: Where We Actually Are
 
