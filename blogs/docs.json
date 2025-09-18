@@ -25,6 +25,7 @@
           {
             "group": "Beacon",
             "pages": [
+              "beacon/voice-ai-smb-operations",
               "beacon/claude-artifacts-classrooms"
             ]
           },
