@@ -15,7 +15,7 @@ The product is an *on-site* voice AI for employees at stations that already exis
 
 The core components include wake + capture through push-to-talk or custom wake word with beamforming mic or headset to beat noise. Custom wake words and on-device SLU are standard with platforms like Picovoice Porcupine/Rhino.([Picovoice][2]) For who's talking, the system uses on-device speaker diarization / recognition to know which employee is speaking and route permissions accordingly (pyannote, ECAPA-TDNN class).([Hugging Face][3])
 
-Speech processing happens through on-device ASR (e.g., Whisper.cpp, NVIDIA Riva) with <1–2 s end-to-end; optional TTS for confirmations.([GitHub][4]) Intent flows to action through domain adapters for "inventory," "ordering," "scheduling," "tickets." Systems integration connects through certified connectors to POS/inventory/scheduling: Square Orders & Inventory, Shopify POS extensions, Toast partner APIs (partnered access).([Square][5]) The edge hardware runs on fanless boxes (Jetson Orin Nano "Super" at $249) or Pi-class CPU for tiny models; offline-first with store-level model cache.([NVIDIA][6])
+Speech processing happens through on-device ASR (e.g., Whisper.cpp, NVIDIA Riva) with &lt; 1–2 s end-to-end; optional TTS for confirmations.([GitHub][4]) Intent flows to action through domain adapters for "inventory," "ordering," "scheduling," "tickets." Systems integration connects through certified connectors to POS/inventory/scheduling: Square Orders & Inventory, Shopify POS extensions, Toast partner APIs (partnered access).([Square][5]) The edge hardware runs on fanless boxes (Jetson Orin Nano "Super" at $249) or Pi-class CPU for tiny models; offline-first with store-level model cache.([NVIDIA][6])
 
 This is explicitly not a phone tree or customer-facing bot; we're voice-enabling *internal ops* on-site.
 
@@ -93,11 +93,11 @@ ASR starts with Riva (edge GPU) or optimized Whisper on CPU; allow pluggable clo
 
 ## Go/no-go experiments (first 6–8 weeks)
 
-Noise trials run in-store pilots with push-to-talk vs. wake word; target <1.5 s response; >95% task success on a 25-intent set. Use Riva/Whisper locally.([NVIDIA][8]) Operator ROI measures time-and-motion study of "receive and count," "ticket close," and "reorder" vs. clipboard/POS. Legal package ships consent flows + privacy signage; BIPA/CPRA policy templates.([Illinois General Assembly][17]) Integration depth demonstrates live write-backs to Square/Toast in 2 pilot shops.([Square][14])
+Noise trials run in-store pilots with push-to-talk vs. wake word; target &lt; 1.5 s response; >95% task success on a 25-intent set. Use Riva/Whisper locally.([NVIDIA][8]) Operator ROI measures time-and-motion study of "receive and count," "ticket close," and "reorder" vs. clipboard/POS. Legal package ships consent flows + privacy signage; BIPA/CPRA policy templates.([Illinois General Assembly][17]) Integration depth demonstrates live write-backs to Square/Toast in 2 pilot shops.([Square][14])
 
 ## What a win looks like
 
-Payback <60 days at common wage rates (~$23–$25.5/hr), with 2–3 stations per store.([FRED][7]) "Default to voice" moments appear: inventory counts, receiving, supplier reorders, ticket closes—no more juggling gloves, scanners, and keyboards. Defensibility comes through proprietary, labeled *ops utterances* and correction logs per vertical; high-friction integrations and certified partner status; device fleet + MDM know-how.
+Payback &lt; 60 days at common wage rates (~$23–$25.5/hr), with 2–3 stations per store.([FRED][7]) "Default to voice" moments appear: inventory counts, receiving, supplier reorders, ticket closes—no more juggling gloves, scanners, and keyboards. Defensibility comes through proprietary, labeled *ops utterances* and correction logs per vertical; high-friction integrations and certified partner status; device fleet + MDM know-how.
 
 ## Bull & bear
 
