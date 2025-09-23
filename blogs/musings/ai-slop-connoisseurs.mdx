@@ -1,0 +1,129 @@
+---
+title: "Becoming AI Slop Connoisseurs"
+description: "How we're all becoming critics and curators of AI-generated content - tech debt disguised as productivity gains. Deep Research using ChatGPT o3, by Rahul Parundekar. Published on September 23, 2025."
+---
+
+![AI Slop Connoisseur](/images/ChatGPT%20Image%20Sep%2023,%202025,%2011_36_48%20AM.png)
+
+Had a realization during yesterday's code review that made me laugh, then think, then worry a bit. I wasn't actually reviewing code anymore—I was *tasting* it. Checking for that distinctive LLM aftertaste, the multiply-nested containers that scream "Copilot was here," the confident-but-wrong comments that feel machine-generated. I'd become what I'm calling an **AI Slop Connoisseur**.
+
+The term "AI slop" has exploded across tech circles this year, and for good reason. It's the perfect descriptor for the high-volume, low-effort generative content flooding our feeds, codebases, and knowledge systems. But here's what's fascinating: we're not just drowning in slop—we're developing sophisticated palates for detecting, grading, and rehabilitating it.
+
+## The Slop Taxonomy We're All Learning
+
+Every platform has its signature flavor of slop now. On social media, it's those surreal "cat soap operas" and "space baby" videos engineered to hack recommendation algorithms ([The Guardian][1]). In search results, it's the confidently wrong AI summaries—remember when Google's AI Overview suggested putting glue on pizza? ([Forbes][2]) The publishing world is swimming in AI-generated books that require disclosure on Amazon KDP ([Amazon][3]).
+
+But the enterprise slop hits differently. It's more insidious because it *looks* productive.
+
+### The Vibe-Spec PRD Problem
+
+You know the type—that beautifully formatted product requirement document that reads like butter but has zero citations, no user interviews, and assumptions that dissolve under scrutiny. It's what I call a "vibe-spec": all narrative, no grounding. These documents behave exactly like technical debt, except instead of code, it's **knowledge debt** that compounds over time.
+
+The parallels to documented failures are striking. Remember the 2023 court sanctions for lawyers using fake ChatGPT citations? ([Reuters][4]) Or the Chicago Sun-Times' AI-generated reading list of books that don't exist? ([The Guardian][5]) These aren't edge cases—they're patterns.
+
+### Code That Smells Like ChatGPT
+
+The research is backing up what we're all feeling. Stanford's study found AI assistants correlate with more insecure code patterns unless explicitly constrained ([arXiv][6]). Veracode's 2025 audit found nearly half of AI-generated code contains security flaws ([TechRadar][7]). And there are telltale **code smells**—those multiply-nested containers, duplicated logic, missing validation—that experienced developers can spot from across the room ([arXiv][8]).
+
+What's wild is how this changes our job descriptions. We've gone from being developers to being **code sommeliers**, swirling pull requests in our mental wine glasses, checking for notes of "was this tested?" and hints of "did anyone actually think about edge cases?"
+
+## The New Knowledge Work: Slop Curation
+
+Here's the uncomfortable truth: **AI slop is tech debt with a marketing department**. It promises velocity but delivers maintenance burden. Every vibe-spec PRD needs grounding later. Every smell in the codebase needs refactoring. Every uncited claim needs verification.
+
+The role shift is real. Engineers aren't just writing code—they're editing bot-authored diffs. Product managers aren't just defining requirements—they're reverse-engineering assumptions from AI drafts. Data analysts aren't just running queries—they're validating whether that impressive-looking chart actually maps to reality.
+
+And the kicker? Sometimes we're curating slop from **past-us**. That feature branch you had Claude write last month? Now you're the one untangling its logic, adding the validation it missed, fixing the security patterns it ignored. We're becoming critics of our own automation.
+
+## The Connoisseurship Culture Emerging
+
+Something interesting is happening in response. Teams are developing implicit norms around "good stock"—artifacts with traceable claims, testable behavior, secure defaults. Even without formal policies, we're collectively learning to taste the difference.
+
+I've started seeing developers share "slop patterns" in Slack like wine tasting notes:
+- "This PR has strong Copilot bouquet with hints of untested edge cases"
+- "Getting definite ChatGPT vibes from this documentation—smooth read, zero citations"
+- "Classic Claude architecture here—works perfectly for the happy path, falls apart at scale"
+
+## Two Slop Vignettes From Last Week
+
+**The Sprint Review Special**
+
+PM presents a crisp narrative about our new feature. Beautiful slides, confident bullets, trendy references to "agentic workflows" and "compound AI systems." The engineers start asking questions: Where's the user research? What's the acceptance criteria? Can we see the data behind that growth projection?
+
+Turns out the entire deck was ChatGPT-generated from a two-line prompt. We spent the next three sprints doing the actual discovery work that should have happened first. Classic knowledge debt compounding.
+
+**The Midnight Vulnerability**
+
+Security alert at 2 AM. A pattern common in LLM-generated code had introduced a vulnerability in our auth flow. The branch had passed tests, looked clean in review. But three weeks later, we're doing emergency patches and explaining to leadership how "AI-accelerated development" led to a potential data breach.
+
+The cleanup took longer than writing it properly would have. Security debt, with interest.
+
+## The Reality of Our AI-Assisted Future
+
+Look, I'm not anti-AI. These tools are incredible when used thoughtfully. But we need to be honest about what's happening: we're all becoming professional slop detectors, spending increasing cycles on quality control for machine-generated artifacts.
+
+The real skill isn't using AI tools—it's knowing when their output is Actually Good™ versus when it's just well-formatted technical debt. It's developing that palate, that instinct for smelling the slop before it ships.
+
+As one engineer put it in our retro last week: "I feel like a restaurant critic who only eats at AI-generated restaurants. Everything tastes vaguely the same, nothing has soul, and I spend most of my time sending dishes back to the kitchen."
+
+## What This Means For Teams
+
+The enterprises that will thrive aren't the ones generating the most content—they're the ones with the best slop detection and rehabilitation systems. The competitive advantage isn't in producing more; it's in knowing what's worth keeping.
+
+We're entering an era where curation skills matter more than creation skills. Where the ability to taste-test AI output for quality, security, and maintainability becomes a core competency. Where "AI Slop Connoisseur" might actually belong on your LinkedIn.
+
+The slop isn't going away. If anything, it's accelerating—research shows a 7x year-over-year jump in AI slop domains ([Digiday][9]). But maybe that's okay. Maybe becoming connoisseurs is exactly the adaptation we need.
+
+After all, sommeliers exist because wine got complicated enough to need experts. Perhaps AI Slop Connoisseurs are just the natural evolution of knowledge work in the age of generated everything.
+
+Just remember: that sweet-tasting vibe-spec might pair well with this sprint's velocity metrics, but the aftertaste of tech debt lingers for quarters.
+
+---
+
+<CardGroup cols={2}>
+  <Card title="Share on LinkedIn" href="https://www.linkedin.com/sharing/share-offsite/?url=https://blog.elevate.do/musings/ai-slop-connoisseurs" icon="linkedin">
+    Share this article with your network
+  </Card>
+  <Card title="Share on X" href="https://twitter.com/intent/tweet?url=https://blog.elevate.do/musings/ai-slop-connoisseurs&text=We're all becoming AI Slop Connoisseurs - fascinating take on how we're learning to detect and grade AI-generated content" icon="twitter">
+    Tweet this article to your followers
+  </Card>
+  <Card title="Schedule a Chat" href="https://calendly.com/rahul-parundekar/30min" icon="calendar">
+    Let's discuss AI quality and technical debt
+  </Card>
+  <Card title="About Elevate.do" href="https://elevate.do" icon="building">
+    Learn more about our work in AI infrastructure and workplace transformation
+  </Card>
+</CardGroup>
+
+<CardGroup cols={2}>
+  <Card title="Follow on LinkedIn" href="https://linkedin.com/in/rahulparundekar" icon="linkedin">
+    Connect for more insights on AI and engineering
+  </Card>
+  <Card title="Follow on X" href="https://x.com/rahulparundekar" icon="twitter">
+    Follow for real-time thoughts on AI agents and infrastructure
+  </Card>
+</CardGroup>
+
+---
+
+## References
+
+* How engagement-farm videos exploit recommendation systems with surreal AI content. ([The Guardian][1])
+* Google's AI Overview suggesting glue on pizza—when automated answers launder misinformation. ([Forbes][2])
+* Amazon's disclosure requirements for AI-generated books on Kindle Direct Publishing. ([Amazon][3])
+* Court sanctions for lawyers submitting fake ChatGPT-generated case citations. ([Reuters][4])
+* Chicago Sun-Times' AI-generated reading list featuring non-existent books. ([The Guardian][5])
+* Stanford study on correlation between AI coding assistants and insecure code patterns. ([arXiv][6])
+* Veracode audit finding security flaws in nearly half of AI-generated code. ([TechRadar][7])
+* Research on characteristic code smells in LLM-generated code. ([arXiv][8])
+* Ad-tech analysis showing 7x year-over-year increase in AI slop domains. ([Digiday][9])
+
+[1]: https://www.theguardian.com/technology/2025/aug/11/cat-soap-operas-and-babies-trapped-in-space-the-ai-slop-taking-over-youtube "Cat soap operas and babies trapped in space: the 'AI slop' taking over YouTube"
+[2]: https://www.forbes.com/sites/jackkelly/2024/05/31/google-ai-glue-to-pizza-viral-blunders/ "Google's AI Recommends Glue on Pizza: What Caused These Viral Blunders"
+[3]: https://kdp.amazon.com/help/topic/G200672390 "Content Guidelines - Kindle Direct Publishing"
+[4]: https://www.reuters.com/legal/new-york-lawyers-sanctioned-using-fake-chatgpt-cases-legal-brief-2023-06-22/ "New York lawyers sanctioned for using fake ChatGPT cases"
+[5]: https://www.theguardian.com/us-news/2025/may/20/chicago-sun-times-ai-summer-reading-list "Chicago Sun-Times confirms AI was used to create reading list of books that don't exist"
+[6]: https://arxiv.org/abs/2211.03622 "Do Users Write More Insecure Code with AI Assistants?"
+[7]: https://www.techradar.com/pro/nearly-half-of-all-code-generated-by-ai-found-to-contain-security-flaws-even-big-llms-affected "Nearly half of all code generated by AI found to contain security flaws"
+[8]: https://arxiv.org/html/2401.14176v1 "Addressing Code Smells in Copilot-Generated Python Code"
+[9]: https://digiday.com/media/wtf-is-ai-slop-doing-to-warp-media-metrics/ "WTF is AI slop doing to warp media metrics?"

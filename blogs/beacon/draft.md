@@ -65,6 +65,14 @@ The Serious Thesis: Small businesses run on point-of-sale systems and laptops bu
 The Quirky Truth: People spend $4,000 on Pelotons to live longer but make 50 daily decisions that shorten their lifespan—and they have no idea which ones matter.
 The Serious Thesis: The longevity market is exploding ($8B today, projected $27B by 2030), but it's fragmented across supplements, wearables, diets, and protocols with no unified intelligence layer. An AI that synthesizes personal health data, lifestyle patterns, and cutting-edge longevity research to provide personalized, actionable daily guidance becomes the operating system for the 100-year life. This isn't another fitness tracker; it's an AI that knows whether that 9 PM coffee or skipped morning walk matters more for your specific biology and goals. The platform that makes longevity science actionable for individuals captures the entire preventive health market.
 
+13. Geo Engineering
+
+🌎 Big Bold Projects: Changing the Landscape, Biodiversity, or Microclimate
+
+The Quirky Truth: Most people think of geoengineering as sci-fi—cloud seeding, giant mirrors in space, or ocean fertilization. But the most impactful projects are happening quietly: restoring wetlands to cool cities, planting urban forests to reverse heat islands, or rewilding farmland to bring back lost species.
+
+The Serious Thesis: Climate adaptation and biodiversity restoration are no longer just government-scale efforts. Startups are deploying drones to plant millions of trees, building AI-driven systems to optimize microclimates for agriculture, and engineering new habitats that support endangered species. These interventions can reshape entire regions—making cities livable, reversing desertification, and creating new economic opportunities. The next decade will see a wave of founders tackling planetary-scale problems with local, actionable solutions. The company that builds scalable, measurable geoengineering platforms will capture the emerging trillion-dollar market for climate resilience and ecological restoration.
+
 📣 How to Apply
 
 We're looking for founders who:
@@ -77,4 +85,6 @@ We're looking for founders who:
 Investment Range: $5K - $50K Stage: Pre-seed 
 What We Provide: Capital, connections, and contrarian conviction
 Contact: [Your contact information]
+
+
 
